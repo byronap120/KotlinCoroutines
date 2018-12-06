@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.byron.coroutines.Post
 import com.example.byron.coroutines.R
+import com.example.byron.coroutines.db.Post
 
 
 class PostAdapter internal constructor(val context: Context) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
