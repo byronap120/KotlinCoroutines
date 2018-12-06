@@ -3,8 +3,8 @@ package com.example.byron.coroutines.viewModels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import com.example.byron.coroutines.db.Post
-import com.example.byron.coroutines.db.PostRoomDatabase
+import com.example.byron.coroutines.data.db.Post
+import com.example.byron.coroutines.data.db.PostRoomDatabase
 import com.example.byron.coroutines.repository.PostRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -34,6 +34,12 @@ class PostsViewModel(application: Application) : AndroidViewModel(application) {
     fun insert(post: Post) {
         scope.launch(Dispatchers.IO) {
             repository.insert(post)
+        }
+    }
+
+    fun refreshPosts() {
+        scope.launch(Dispatchers.IO) {
+            repository.refreshPosts()
         }
     }
 }

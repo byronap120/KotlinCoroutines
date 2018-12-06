@@ -1,4 +1,4 @@
-package com.example.byron.coroutines
+package com.example.byron.coroutines.data.network
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred

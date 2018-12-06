@@ -1,4 +1,4 @@
-package com.example.byron.coroutines.db
+package com.example.byron.coroutines.data.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room

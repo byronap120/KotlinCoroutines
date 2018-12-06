@@ -13,6 +13,7 @@ import com.example.byron.coroutines.viewModels.PostsViewModel
 
 class MainActivity : AppCompatActivity() {
 
+
     private lateinit var postViewModel: PostsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +35,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.floatingButton.setOnClickListener { view ->
-            postViewModel.insert(
-                com.example.byron.coroutines.db.Post(
-                    0,
-                    1,
-                    "button",
-                    "float"
-                )
-            )
+            postViewModel.refreshPosts()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        postViewModel.refreshPosts()
+    }
+
+
 }

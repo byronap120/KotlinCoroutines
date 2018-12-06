@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.byron.coroutines.R
-import com.example.byron.coroutines.db.Post
+import com.example.byron.coroutines.data.db.Post
 
 
 class PostAdapter internal constructor(val context: Context) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
@@ -21,7 +21,7 @@ class PostAdapter internal constructor(val context: Context) : RecyclerView.Adap
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val post = posts[position]
-        viewHolder.postName.text = post.title
+        viewHolder.postName.text = post.id.toString()
     }
 
     override fun getItemCount(): Int {
