@@ -6,19 +6,12 @@ import android.arch.lifecycle.LiveData
 import com.example.byron.coroutines.db.Post
 import com.example.byron.coroutines.db.PostRoomDatabase
 import com.example.byron.coroutines.repository.PostRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class PostsViewModel(application: Application): AndroidViewModel(application) {
-
-    private var parentJob = Job()
-    // By default all the coroutines launched in this scope should be using the Main dispatcher
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Main
-    private val scope = CoroutineScope(coroutineContext)
+class PostsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PostRepository
     // Using LiveData and caching what getAlphabetizedWords returns has several benefits:
@@ -28,8 +21,14 @@ class PostsViewModel(application: Application): AndroidViewModel(application) {
     val allPosts: LiveData<List<Post>>
 
     init {
-        val wordsDao = PostRoomDatabase.getDatabase(application).postDao()
-        repository = PostRepository(wordsDao)
+        val postsDao = PostRoomDatabase.getDatabase(application).postDao()
+        repository = PostRepository(postsDao)
         allPosts = repository.allPosts
+    }
+
+    fun insert(post: Post) {
+        GlobalScope.launch(Dispatchers.Main) {
+            repository.insert(post)
+        }
     }
 }

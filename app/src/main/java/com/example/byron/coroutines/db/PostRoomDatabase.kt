@@ -11,27 +11,24 @@ abstract class PostRoomDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
 
     companion object {
-        private lateinit var INSTANCE: PostRoomDatabase
+        @Volatile
+        private var INSTANCE: PostRoomDatabase? = null
 
-        /**
-         * Instantiate a database from a context.
-         */
-        fun getDatabase(context: Context): PostRoomDatabase {
-            synchronized(PostRoomDatabase::class) {
-                if (!::INSTANCE.isInitialized) {
-                    INSTANCE = Room
-                        .databaseBuilder(
-                            context.applicationContext,
-                            PostRoomDatabase::class.java,
-                            "posts_db"
-                        )
-                        .fallbackToDestructiveMigration()
-                        .build()
-                }
+        fun getDatabase(
+            context: Context
+        ): PostRoomDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    PostRoomDatabase::class.java,
+                    "word_database"
+                ).build()
+                INSTANCE = instance
+                instance
             }
-            return INSTANCE
         }
 
     }
-
 }

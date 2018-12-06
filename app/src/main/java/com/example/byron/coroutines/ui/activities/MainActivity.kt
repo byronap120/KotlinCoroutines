@@ -1,20 +1,18 @@
 package com.example.byron.coroutines.ui.activities
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.widget.Toast
 import com.example.byron.coroutines.Post
 import com.example.byron.coroutines.PostService
 import com.example.byron.coroutines.R
 import com.example.byron.coroutines.databinding.ActivityMainBinding
 import com.example.byron.coroutines.ui.adapters.PostAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.byron.coroutines.viewModels.PostsViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private val service by lazy {
         PostService.makeRetrofitService()
     }
+
+    private lateinit var postViewModel: PostsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +34,22 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
 
-
         val tempList: List<Post> = listOf(
             Post(1, 1, "asdf", "asdf"),
             Post(1, 1, "asdf", "asdf")
         )
         adapter.setPosts(tempList)
+
+
+        // Reference viewModel
+        postViewModel = ViewModelProviders.of(this).get(PostsViewModel::class.java)
+        // Observe viewModel for changes on posts
+        postViewModel.allPosts.observe(this, Observer { value ->
+            value?.let {
+                Log.d(TAG, value.toString())
+            }
+        })
+
 
 //        GlobalScope.launch(Dispatchers.Main) {
 //            Log.d(TAG, "start")
