@@ -32,7 +32,7 @@ class PostRepository(private val postDao: PostDao) {
             }
             dbPost?.let {
                 postDao.insertPosts(dbPost)
-                Log.d("com.byron.test", it.toString())
+                Log.d("com.byron.test", it.size.toString())
             }
         } else {
             Log.d("com.byron.test", "error")

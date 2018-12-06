@@ -21,7 +21,8 @@ class PostAdapter internal constructor(val context: Context) : RecyclerView.Adap
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val post = posts[position]
-        viewHolder.postName.text = post.id.toString()
+        viewHolder.postName.text = post.title
+        viewHolder.postDescription.text = post.body
     }
 
     override fun getItemCount(): Int {
@@ -30,9 +31,10 @@ class PostAdapter internal constructor(val context: Context) : RecyclerView.Adap
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val postName: TextView = itemView.findViewById(R.id.post_name)
+        val postDescription: TextView = itemView.findViewById(R.id.post_description)
     }
 
-    fun setPosts(posts: List<Post>){
+    fun setPosts(posts: List<Post>) {
         this.posts = posts
         notifyDataSetChanged()
     }
