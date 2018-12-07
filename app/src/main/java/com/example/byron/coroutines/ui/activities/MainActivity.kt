@@ -6,13 +6,13 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.example.byron.coroutines.R
 import com.example.byron.coroutines.databinding.ActivityMainBinding
 import com.example.byron.coroutines.ui.adapters.PostAdapter
 import com.example.byron.coroutines.viewModels.PostsViewModel
 
 class MainActivity : AppCompatActivity() {
-
 
     private lateinit var postViewModel: PostsViewModel
 
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         // Reference viewModel
         postViewModel = ViewModelProviders.of(this).get(PostsViewModel::class.java)
+
         // Observe viewModel for changes on posts
         postViewModel.allPosts.observe(this, Observer { value ->
             value?.let {
@@ -34,15 +35,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        binding.floatingButton.setOnClickListener { view ->
+        // Observe viewModel for changes on spinner
+        postViewModel.spinner.observe(this, Observer { value ->
+            value?.let { show ->
+                binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
+
+        binding.floatingButton.setOnClickListener {
             postViewModel.refreshPosts()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        postViewModel.refreshPosts()
-    }
-
 
 }
